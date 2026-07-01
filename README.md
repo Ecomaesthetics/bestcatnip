@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Best Catnip — Setup Guide
 
-## Getting Started
+## 1. Create a Supabase project
 
-First, run the development server:
+1. Go to [supabase.com](https://supabase.com) and create a new project.
+2. Wait for the database to be provisioned (~1 minute).
+
+## 2. Run the database migration
+
+In the Supabase dashboard → **SQL Editor**, paste and run the contents of:
+
+```
+supabase/migrations/001_create_products.sql
+```
+
+This creates the `products` table, indexes, and an `updated_at` trigger.
+
+## 3. Configure environment variables
+
+Copy the example file and fill in your keys:
+
+```bash
+cp .env.example .env.local
+```
+
+Find your keys in the Supabase dashboard under **Project Settings → API**:
+
+| Variable | Where to find it |
+|---|---|
+| `SUPABASE_URL` | Project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | `service_role` secret (never expose in browser) |
+| `NEXT_PUBLIC_SUPABASE_URL` | Same as `SUPABASE_URL` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `anon` public key |
+
+**Never commit `.env.local` to git.** It's already in `.gitignore`.
+
+## 4. Fill in the product CSV
+
+Edit `data/products.csv`. Columns:
+
+| Column | Required | Notes |
+|---|---|---|
+| `asin` | ✅ | Unique Amazon product ID, used as upsert key |
+| `title` | ✅ | Full product name |
+| `category` | ✅ | e.g. `catnip`, `toys`, `treats` |
+| `price` | ✅ | Numeric, e.g. `9.99` |
+| `image_url` | ✅ | Direct image URL |
+| `amazon_url` | ✅ | Full Amazon URL with your affiliate tag |
+| `features` | | Pipe-separated list, e.g. `100% organic\|No additives` |
+| `description` | | Plain text product description |
+| `slug` | | URL slug — auto-generated from title if blank |
+
+## 5. Run the importer
+
+```bash
+# Install dotenv CLI once if needed: npm install -g dotenv-cli
+dotenv -e .env.local -- npm run import
+
+# Or with a custom CSV path:
+dotenv -e .env.local -- npx tsx scripts/import.ts path/to/other.csv
+```
+
+The importer will print a report:
+
+```
+Parsed 12 row(s) from data/products.csv
+
+──────────────────────────────────────────────────
+  Inserted : 10
+  Updated  : 2
+  Skipped  : 0
+──────────────────────────────────────────────────
+Done.
+```
+
+**Re-running is safe** — existing rows are updated (upsert on `asin`), new rows are inserted.
+
+## 6. Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 7. Re-importing after CSV changes
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Simply re-run step 5. Existing products are updated; new rows are inserted; nothing is deleted.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To force the Next.js cache to pick up changes immediately (without waiting for the 1-hour ISR window), call `revalidateTag('products')` from a route handler, or redeploy.
