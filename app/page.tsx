@@ -174,6 +174,35 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* ── AMAZON SHOP ───────────────────────────────────────────────────── */}
+      <section className="border-t border-border bg-gradient-to-br from-[#FF9900]/10 via-white to-[#FF9900]/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex flex-col sm:flex-row items-center gap-8 text-center sm:text-left">
+          <div className="flex-1">
+            <span className="inline-block bg-[#FF9900] text-white text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider">
+              Official Amazon Shop
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-ink mb-3">
+              Follow Us on Amazon 🐾
+            </h2>
+            <p className="text-ink/60 max-w-md mb-6 text-sm sm:text-base">
+              Shop our full curated storefront directly on Amazon — follow us to get notified about new picks, seasonal favourites, and exclusive cat deals.
+            </p>
+            <a
+              href="https://www.amazon.com/shop/captcatnip?ref=cm_sw_r_apan_aipsfshop_SB5VG7V8T6B6W34CYDFZ_2&language=en-US"
+              target="_blank"
+              rel="nofollow noopener"
+              className="inline-flex items-center gap-2 bg-[#FF9900] hover:bg-[#e68a00] text-white font-bold px-7 py-3.5 rounded-xl transition-colors shadow-lg shadow-[#FF9900]/20 text-sm sm:text-base"
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white" aria-hidden><path d="M13.958 10.09c0 1.232.029 2.256-.591 3.351-.502.891-1.301 1.438-2.186 1.438-1.214 0-1.922-.924-1.922-2.292 0-2.692 2.415-3.182 4.699-3.182v.685zm3.186 7.705a.66.66 0 01-.753.074c-1.058-.88-1.245-1.287-1.826-2.127-1.745 1.781-2.982 2.314-5.239 2.314-2.675 0-4.759-1.652-4.759-4.956 0-2.582 1.397-4.338 3.387-5.193 1.725-.756 4.131-.891 5.97-1.099v-.41c0-.753.058-1.642-.383-2.294-.383-.579-1.118-.819-1.765-.819-1.199 0-2.267.615-2.528 1.89-.054.285-.265.567-.554.58l-3.107-.335c-.26-.058-.549-.271-.474-.673C6.16 2.116 9.329 1 12.163 1c1.45 0 3.344.385 4.489 1.481 1.45 1.35 1.312 3.151 1.312 5.111v4.628c0 1.391.577 2.002 1.119 2.752.19.267.232.588-.009.787-.61.51-1.693 1.46-2.289 1.99l-.009-.009.368.055z"/></svg>
+              Visit Our Amazon Storefront
+            </a>
+          </div>
+          <div className="hidden sm:flex items-center justify-center w-48 h-48 rounded-3xl bg-[#FF9900]/10 border-2 border-[#FF9900]/20 shrink-0">
+            <span className="text-7xl">🛍️</span>
+          </div>
+        </div>
+      </section>
+
       {/* ── TRUST SECTION ─────────────────────────────────────────────────── */}
       <section className="border-t border-border bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
