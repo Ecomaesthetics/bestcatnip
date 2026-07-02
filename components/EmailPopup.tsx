@@ -94,6 +94,11 @@ export default function EmailPopup() {
                 id="1xxvep"
                 data-async="true"
                 data-recaptcha="true"
+                onSubmit={() => {
+                  // Mark as done immediately on submit so popup never shows again
+                  localStorage.setItem(STORAGE_KEY, "1");
+                  setTimeout(() => { setSuccess(true); setTimeout(dismiss, 2800); }, 1500);
+                }}
               >
                 <input
                   type="email"
